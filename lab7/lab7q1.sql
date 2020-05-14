@@ -1,0 +1,12 @@
+delimiter &
+CREATE PROCEDURE init(IN p INT)
+BEGIN
+DECLARE x INT;
+SET x = (SELECT COUNT(*)
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE table_schema = 'stu_smia076_COMPSCI_351_C_S1_2020_A2_Q1'
+AND table_name = 'PROJECT' AND column_name = 'Hours');
+IF x = 0 THEN ALTER TABLE PROJECT ADD Hours FLOAT;
+END IF;
+UPDATE PROJECT SET Hours = 0.0 WHERE Pnumber = p;
+END;

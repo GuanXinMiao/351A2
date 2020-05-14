@@ -1,0 +1,18 @@
+CREATE DEFINER=`smia076`@`%` PROCEDURE `stat`()
+BEGIN
+DECLARE pmin INT;
+DECLARE pmax INT;
+DECLARE c INT;
+DECLARE x FLOAT;
+SET pmin = (SELECT MIN(Pnumber) FROM PROJECT);
+SET pmax = (SELECT MAX(Pnumber) FROM PROJECT);
+SET c = pmin;
+WHILE (c <= pmax) DO
+CALL init(c);
+SET x = (SELECT SUM(Hours) FROM WORKS_ON WHERE Pno = c);
+IF (x IS NULL) THEN SET x = 0;
+END IF;
+UPDATE PROJECT SET Hours = x WHERE Pnumber = c;
+SET c = c + 1;
+END WHILE;
+END
